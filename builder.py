@@ -137,6 +137,8 @@ def main():
     print('[*] building...')
     result = subprocess.run(
         ['nim', 'c', '-d:release', '--cpu:amd64', '--os:windows',
+         '--gcc.exe:x86_64-w64-mingw32-gcc',
+         '--gcc.linkerexe:x86_64-w64-mingw32-gcc',
          '--out:redcrab.exe', 'src/redcrab.nim'],
     )
     if result.returncode != 0:

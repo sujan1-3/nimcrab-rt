@@ -1,8 +1,6 @@
 # defs.nim — NT type definitions
 # Translated from defs.rs
 
-import winim
-
 type
   HANDLE*      = pointer
   PVOID*       = pointer

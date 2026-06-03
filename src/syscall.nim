@@ -149,7 +149,7 @@ proc syscallTrampoline*(ssn: uint32, a1, a2, a3, a4: uint): NTSTATUS {.asmNoStac
 
 proc doSyscall*(ssn: uint16, a1, a2, a3, a4, a5, a6: uint): NTSTATUS =
   # unsafe — inline syscall dispatch
-  var result: int32
+  var ret: int32
   {.emit: """
     __asm__ volatile (
       "subq $0x50, %%rsp\n\t"
@@ -162,8 +162,8 @@ proc doSyscall*(ssn: uint16, a1, a2, a3, a4, a5, a6: uint): NTSTATUS =
       "movl %[ssn], %%eax\n\t"
       "syscall\n\t"
       "addq $0x50, %%rsp\n\t"
-      "movl %%eax, %[result]\n\t"
-      : [result] "=r" (`result`)
+      "movl %%eax, %[ret]\n\t"
+      : [ret] "=r" (`ret`)
       : [ssn] "r" ((unsigned int)`ssn`),
         [a1]  "r" (`a1`),
         [a2]  "r" (`a2`),
@@ -174,7 +174,7 @@ proc doSyscall*(ssn: uint16, a1, a2, a3, a4, a5, a6: uint): NTSTATUS =
       : "rax", "rcx", "rdx", "r8", "r9", "r10", "r11", "memory"
     );
   """.}
-  NTSTATUS(result)
+  NTSTATUS(ret)
 
 # ─── Typed wrappers ───────────────────────────────────────────────────────────
 
