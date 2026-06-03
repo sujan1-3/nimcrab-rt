@@ -75,7 +75,7 @@ proc readAds*(): seq[byte] =
     discard CloseHandle(h)
     return @[]
 
-  let total = int(uint64(sizeHi) shl 32) or int(sizeLo)
+  let total = int((uint64(sizeHi) shl 32) or uint64(sizeLo))
   var buf = newSeq[byte](total)
   var nRead: DWORD = 0
   let ok = ReadFile(

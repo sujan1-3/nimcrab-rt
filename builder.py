@@ -125,7 +125,8 @@ def main():
     )
     main_src, n = key_pat.subn(new_key, main_src)
     if n == 0:
-        print('[warn] SLEEP_KEY pattern not found in src/redcrab.nim')
+        print('[!] SLEEP_KEY pattern not found in src/redcrab.nim — aborting build')
+        sys.exit(1)
 
     with open(main_path, 'w', encoding='utf-8') as f:
         f.write(main_src)

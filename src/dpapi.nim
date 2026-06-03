@@ -15,8 +15,8 @@ proc dpapiEncrypt*(plaintext: seq[byte]): seq[byte] =
     addr outBlob) == 0:
     return @[]
 
-  let data = newSeq[byte](int(outBlob.cbData))
-  copyMem(addr result[0], outBlob.pbData, int(outBlob.cbData))
+  var data = newSeq[byte](int(outBlob.cbData))
+  copyMem(addr data[0], outBlob.pbData, int(outBlob.cbData))
   discard LocalFree(cast[HLOCAL](outBlob.pbData))
   result = data
 
@@ -33,7 +33,7 @@ proc dpapiDecrypt*(ciphertext: seq[byte]): seq[byte] =
     addr outBlob) == 0:
     return @[]
 
-  let data = newSeq[byte](int(outBlob.cbData))
-  copyMem(addr result[0], outBlob.pbData, int(outBlob.cbData))
+  var data = newSeq[byte](int(outBlob.cbData))
+  copyMem(addr data[0], outBlob.pbData, int(outBlob.cbData))
   discard LocalFree(cast[HLOCAL](outBlob.pbData))
   result = data

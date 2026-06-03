@@ -88,7 +88,7 @@ proc loadPe*(buf: seq[byte]): bool =
       while true:
         let orig = cast[ptr uint](baseu + thunkRva + iOff)[]
         if orig == 0: break
-        let fnNamePtr = cast[ptr byte](baseu + (orig and not(0x8000_0000_0000_0000'u)) + 2)
+        let fnNamePtr = cast[ptr byte](baseu + (orig and 0x7FFF_FFFF_FFFF_FFFF'u) + 2)
         var fh: uint32 = 5381
         var m = 0
         while true:
